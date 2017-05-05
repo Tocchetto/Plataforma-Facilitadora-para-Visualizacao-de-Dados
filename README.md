@@ -1,2 +1,2 @@
-# Plataforma-Facilitadora-para-Visualizacao-de-Dados
-Trabalho de Qualidade e Teste de Software
+# Plataforma Facilitadora para Visualizacao de Dados
+Trabalho final referente a disciplina "Qualidade e Teste de Software".
