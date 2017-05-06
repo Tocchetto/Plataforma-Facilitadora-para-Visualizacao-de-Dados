@@ -1,3 +1,12 @@
+Global $conectionProgressBar
+Global $chance = 2
+Global $momentoErro
+Global $loginError
+Global $loginButton
+Global $loginWindow
+Global $generateFileButton
+Global $currentListedFile = 0
+Global $generatedData
 #include <ButtonConstants.au3>
 #include <EditConstants.au3>
 #include <GUIConstantsEx.au3>
@@ -14,8 +23,8 @@ Func Terminate()
    Exit 1
 EndFunc
 
-GUILogin()
-;GUIinterface()
+;GUILogin()
+GUIinterface()
 
 Func GUILogin()
    $loginWindow = GUICreate("Login", 301, 201)
@@ -23,16 +32,14 @@ Func GUILogin()
    $usernameLabel = GUICtrlCreateLabel("Username:", 60, 37, 55, 17)
    $passwordLabel= GUICtrlCreateLabel("Password:", 60, 88, 53, 17)
    $passwordInput = GUICtrlCreateInput("", 60, 107, 185, 21, $ES_PASSWORD)
-   Global $loginButton = GUICtrlCreateButton("Login", 136, 168, 75, 25)
+   $loginButton = GUICtrlCreateButton("Login", 136, 168, 75, 25)
    $closeButton = GUICtrlCreateButton("Close", 216, 168, 75, 25)
-   Global $conectionProgressBar = GuiCtrlCreateProgress(100,140,100,20)
+   $conectionProgressBar = GuiCtrlCreateProgress(100,140,100,20)
    GUISetState(@SW_SHOW)
-   Global $chance = 2
-   Global $momentoErro
-   Global $loginError = 0
+   $loginError = 0
    while 1
 	  $nMsg = GUIGetMsg()
-	  If _DateDiff('s', $momentoErro, _NowCalc()) > 5 And $loginError == 1 Then
+	  If _DateDiff('s', $momentoErro, _NowCalc()) > 9 And $loginError == 1 Then ; para dar 10 segundos
 		 GUICtrlSetState($loginButton, $GUI_ENABLE)
 		 $loginError = 0
 	  EndIf
@@ -44,27 +51,7 @@ Func GUILogin()
 		 Case $loginButton
 			Local $username = GUICtrlRead($usernameInput)
 			Local $password = GUICtrlRead($passwordInput)
-			if login($username, $password) Then
-			   GUICtrlSetData($conectionProgressBar, 100)
-			   Sleep(700)
-			   MsgBox(1,"Sucesso", "Login efetuado com sucesso!", 1)
-			   GUIDelete($loginWindow)
-			   GUIinterface()
-			Else
-			   GUICtrlSetData($conectionProgressBar, 100)
-			   Sleep(700)
-			   if $chance <> 0 Then
-				  MsgBox(1, "Erro", "Usuário ou senha incorretos, tente novamente! ");Você tem mais " & $chance & " chances...
-			   Else
-				  $loginError = 1
-				  $chance = 3
-				  MsgBox(1, "Multiplas Tentativas Erradas", "Aguarde 10 segundos e tente novamente")
-				  GUICtrlSetState($loginButton, $GUI_DISABLE)
-				  $momentoErro = _NowCalc()
-			   EndIf
-			   $chance = $chance - 1
-			   GUICtrlSetData($conectionProgressBar, 0)
-			EndIf
+			login($username, $password, 0)
 	  EndSwitch
    WEnd
 EndFunc
@@ -73,10 +60,46 @@ While 1
    Sleep(50)
 WEnd
 
-Func login($username, $password)
+Func login($username, $password, $UT)
    If ($username == "Guilherme" And $password == "senha") Then
+	  If $UT Then
+		 Return 1
+	  EndIf
+	  GUICtrlSetData($conectionProgressBar, 100)
+	  If Not $UT Then
+		 Sleep(700)
+	  EndIf
+	  MsgBox(1,"Sucesso", "Login efetuado com sucesso!", 1)
+	  GUIDelete($loginWindow)
+	  If Not $UT Then
+		 GUIinterface()
+	  EndIf
 	  Return 1
    Else
+	  GUICtrlSetData($conectionProgressBar, 100)
+	  If Not $UT Then
+		 Sleep(700)
+	  EndIf
+	  if $chance <> 0 Then
+		 $chance = $chance - 1
+		 If $UT Then
+			Return 0
+		 EndIf
+		 MsgBox(1, "Erro", "Usuário ou senha incorretos, tente novamente! ");Você tem mais " & $chance & " chances...
+	  Else
+		 $loginError = 1
+		 $chance = 2
+		 If $UT Then
+			Return 2
+		 EndIf
+		 MsgBox(1, "Multiplas Tentativas Erradas", "Aguarde 10 segundos e tente novamente")
+		 GUICtrlSetState($loginButton, $GUI_DISABLE)
+		 $momentoErro = _NowCalc()
+	  EndIf
+	  If $UT Then
+		 Return 0
+	  EndIf
+	  GUICtrlSetData($conectionProgressBar, 0)
 	  Return 0
    EndIf
 EndFunc
@@ -88,12 +111,10 @@ Func GUIinterface()
    $type1UsersButton = GUICtrlCreateButton("Usuários do Tipo 1", 318, 16, 147, 25)
    $type2UsersButton = GUICtrlCreateButton("Usuários do Tipo 2", 318, 80, 147, 25)
    $generateFileButton = GUICtrlCreateButton("Gerar Arquivo Texto", 358, 304, 107, 25)
-   Global $generatedData = GUICtrlCreateList("", 23, 120, 441, 175)
+   $generatedData = GUICtrlCreateList("", 23, 120, 441, 175)
    GUISetState(@SW_SHOW)
    GUICtrlSetState($generateFileButton, $GUI_DISABLE)
    MsgBox(0, "Bem-Vindo", "Bem-Vindo ao sistema de consultas!",1)
-
-   Global $currentListedFile = 0
 
    while 1
 	  $nMsg = GUIGetMsg()
@@ -102,79 +123,77 @@ Func GUIinterface()
 		 Case $GUI_EVENT_CLOSE
 			Exit
 		 Case $allUsersButton
-			If listAllUsers() Then
-			   GUICtrlSetState($generateFileButton, $GUI_ENABLE)
-			Else
-			   MsgBox(0, "", "Arquivo com com a relação de todos os usuários não existe.")
-			   GUICtrlSetState($generateFileButton, $GUI_DISABLE)
-			EndIf
+			listAllUsers(0)
 		 Case $paidUsersButton
-			If listPaidUsers() Then
-			   GUICtrlSetState($generateFileButton, $GUI_ENABLE)
-			Else
-			   MsgBox(0, "", "Arquivo com com a relação dos usuários assinantes não existe.")
-			   GUICtrlSetState($generateFileButton, $GUI_DISABLE)
-			EndIf
+			listPaidUsers(0)
 		 Case $type1UsersButton
-			If listPaidUsersType1() Then
-			   GUICtrlSetState($generateFileButton, $GUI_ENABLE)
-			Else
-			   MsgBox(0, "", "Arquivo com com a relação dos usuários do tipo1 não existe.")
-			   GUICtrlSetState($generateFileButton, $GUI_DISABLE)
-			EndIf
+			listPaidUsersType1(0)
 		 Case $type2UsersButton
-			If listPaidUsersType2() Then
-			   GUICtrlSetState($generateFileButton, $GUI_ENABLE)
-			Else
-			   MsgBox(0, "", "Arquivo com com a relação dos usuários do tipo2 não existe.")
-			   GUICtrlSetState($generateFileButton, $GUI_DISABLE)
-			EndIf
+			listPaidUsersType2(0)
 		 Case $generateFileButton
-			If $currentListedFile == 0 Then
-			   MsgBox(0,"Ação Inválida", "Por Favor, consulto um tipo de usuário para poder gerar um arquivo...")
-			Else
-			   downloadGeneratedUsers()
-			EndIf
+			downloadGeneratedUsers(0, 0)
 	  EndSwitch
    WEnd
 
 EndFunc
 
-Func listAllUsers()
+Func listAllUsers($UT)
    If FileExists("data\allUsers.txt") Then
+	  GUICtrlSetState($generateFileButton, $GUI_ENABLE)
 	  $currentListedFile = 1
+	  If $UT Then
+		 Return 1
+	  EndIf
 	  GUICtrlSetData($generatedData, "")
 	  Local $lineAux = 1
 	  While FileReadLine("data\allUsers.txt",$lineAux) <> ""
 		 GUICtrlSetData($generatedData, FileReadLine("data\allUsers.txt",$lineAux))
 		 $lineAux = $lineAux + 1
 	  WEnd
-	  Return True
+	  Return 1
    Else
+	  GUICtrlSetState($generateFileButton, $GUI_DISABLE)
+	  If($UT) Then
+		 Return 0
+	  EndIf
+	  MsgBox(0, "", "Arquivo com com a relação de todos os usuários não existe.")
 	  GUICtrlSetData($generatedData, "")
-	  Return False
+	  Return 0
    EndIf
 EndFunc
 
-Func listPaidUsers()
+Func listPaidUsers($UT)
    If FileExists("data\paidUsers.txt") Then
+	  GUICtrlSetState($generateFileButton, $GUI_ENABLE)
 	  $currentListedFile = 2
+	  If $UT Then
+		 Return 1
+	  EndIf
 	  GUICtrlSetData($generatedData, "")
 	  Local $lineAux = 1
 	  While FileReadLine("data\paidUsers.txt",$lineAux) <> ""
 		 GUICtrlSetData($generatedData, FileReadLine("data\paidUsers.txt",$lineAux))
 		 $lineAux = $lineAux + 1
 	  WEnd
-	  Return True
+	  Return 1
    Else
+	  GUICtrlSetState($generateFileButton, $GUI_DISABLE)
+	  If($UT) Then
+		 Return 0
+	  EndIf
+	  MsgBox(0, "", "Arquivo com com a relação dos usuários assinantes não existe.")
 	  GUICtrlSetData($generatedData, "")
-	  Return False
+	  Return 0
    EndIf
 EndFunc
 
-Func listPaidUsersType1()
+Func listPaidUsersType1($UT)
    If FileExists("data\paidUsersType1.txt") Then
+	  GUICtrlSetState($generateFileButton, $GUI_ENABLE)
 	  $currentListedFile = 3
+	  If $UT Then
+		 Return 1
+	  EndIf
 	  GUICtrlSetData($generatedData, "")
 	  Local $lineAux = 1
 	  While FileReadLine("data\paidUsersType1.txt",$lineAux) <> ""
@@ -183,14 +202,23 @@ Func listPaidUsersType1()
 	  WEnd
 	  Return True
    Else
+	  GUICtrlSetState($generateFileButton, $GUI_DISABLE)
+	  If($UT) Then
+		 Return 0
+	  EndIf
+	  MsgBox(0, "", "Arquivo com com a relação dos usuários do tipo1 não existe.")
 	  GUICtrlSetData($generatedData, "")
 	  Return False
    EndIf
 EndFunc
 
-Func listPaidUsersType2()
+Func listPaidUsersType2($UT)
    If FileExists("data\paidUsersType2.txt") Then
+	  GUICtrlSetState($generateFileButton, $GUI_ENABLE)
 	  $currentListedFile = 4
+	  If $UT Then
+		 Return 1
+	  EndIf
 	  GUICtrlSetData($generatedData, "")
 	  Local $lineAux = 1
 	  While FileReadLine("data\paidUsersType2.txt",$lineAux) <> ""
@@ -199,31 +227,64 @@ Func listPaidUsersType2()
 	  WEnd
 	  Return True
    Else
+	  GUICtrlSetState($generateFileButton, $GUI_DISABLE)
+	  If($UT) Then
+		 Return 0
+	  EndIf
+	  MsgBox(0, "", "Arquivo com com a relação dos usuários do tipo2 não existe.")
 	  GUICtrlSetData($generatedData, "")
 	  Return False
    EndIf
 EndFunc
 
-Func downloadGeneratedUsers()
-   ; Create a constant variable in Local scope of the message to display in FileSelectFolder.
-   Local Const $sMessage = "Select a folder"
+Func downloadGeneratedUsers($UT, $aux)
+   If $aux Then
+	  SetError(1)
+   EndIf
+   If $currentListedFile == 0 Then
+	  If $UT Then
+		 Return 0
+	  EndIf
+	  MsgBox(0,"Ação Inválida", "Por Favor, consulte um tipo de usuário para poder gerar um arquivo...") ;Isso não está previsto na documentação por que na teoria NUNCA irá acontecer, é só um debug...
+	  Return 0
+   EndIf
+   ;Título do explorador de arquivos.
+   Local Const $sMessage = "Selecione uma Pasta"
 
    ;MsgBox(1,"",@ScriptDir&"\data") Mostra o caminho que o script se encontra executando
 
-   ; Display an open dialog to select a file.
-   Local $sFileSelectFolder = FileSelectFolder($sMessage, "")
-   If @error Then
-      ; Display the error message.
+   Local $sFileSelectFolder
+   If $UT Then
+	  $sFileSelectFolder = "C:\Users\Zelp\Desktop"
+   Else
+	  $sFileSelectFolder = FileSelectFolder($sMessage, "") ;Display an open dialog to select a file.
+   EndIf
+   If @error Or @error == 01 Then
+	  If $UT Then
+		 Return 0
+	  EndIf
       MsgBox(0, "", "Nenhuma pasta foi selecionada")
    Else
 	  If $currentListedFile == 1 Then
 		 FileCopy(@ScriptDir&"\data\allUsers.txt", $sFileSelectFolder)
+		 If $UT Then
+			Return 1
+		 EndIf
 	  ElseIf $currentListedFile == 2 Then
 		 FileCopy(@ScriptDir&"\data\paidUsers.txt", $sFileSelectFolder)
+		 If $UT Then
+			Return 1
+		 EndIf
 	  ElseIf $currentListedFile == 3 Then
 		 FileCopy(@ScriptDir&"\data\paidUsersType1.txt", $sFileSelectFolder)
+		 If $UT Then
+			Return 1
+		 EndIf
 	  Else
 		 FileCopy(@ScriptDir&"\data\paidUsersType2.txt", $sFileSelectFolder)
+		 If $UT Then
+			Return 1
+		 EndIf
 	  EndIf
 	  MsgBox(0,"Sucesso", "Arquivo salvo em " & @CRLF & $sFileSelectFolder)
    EndIf
