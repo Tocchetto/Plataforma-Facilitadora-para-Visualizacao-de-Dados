@@ -23,8 +23,8 @@ Func Terminate()
    Exit 1
 EndFunc
 
-;GUILogin()
-GUIinterface()
+GUILogin()
+;GUIinterface()
 
 Func GUILogin()
    $loginWindow = GUICreate("Login", 301, 201)
