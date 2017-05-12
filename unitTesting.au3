@@ -83,8 +83,8 @@ FileDelete("Data/paidUsersType2Copy.txt")
 UTAssert(FileExists("Data/allUsers.txt") == 1) ;Pré-Condição
 UTAssert(listAllUsers(1) == 1) ;Pré-Condição (Testa se os usários estão listados na caixa de diálogo)
 UTAssert(downloadGeneratedUsers(1,0 ) == 1) ;Faz o download do "allUsers.txt" na área de trabalho
-UTAssert(FileExists("C:\Users\Zelp\Desktop\allUsers.txt") == 1) ;Testa se o arquivo foi realmente criado
-FileDelete("C:\Users\Zelp\Desktop\allUsers.txt")
+UTAssert(FileExists("C:\Users\" & @UserName & "\Desktop\allUsers.txt") == 1) ;Testa se o arquivo foi realmente criado
+FileDelete("C:\Users\" & @UserName & "\Desktop\allUsers.txt")
 
 ;CT_019
 UTAssert(FileExists("Data/allUsers.txt") == 1) ;Pré-Condição
@@ -95,8 +95,8 @@ UTAssert(downloadGeneratedUsers(1, 1) == 0) ;Simula o botão "Cancelar" do explo
 UTAssert(FileExists("Data/paidUsers.txt") == 1) ;Pré-Condição
 UTAssert(listPaidUsers(1) == 1) ;Pré-Condição (Testa se os usários estão listados na caixa de diálogo)
 UTAssert(downloadGeneratedUsers(1,0 ) == 1) ;Faz o download do "paidUsers.txt" na área de trabalho
-UTAssert(FileExists("C:\Users\Zelp\Desktop\paidUsers.txt") == 1) ;Testa se o arquivo foi realmente criado
-FileDelete("C:\Users\Zelp\Desktop\paidUsers.txt")
+UTAssert(FileExists("C:\Users\" & @UserName & "\Desktop\paidUsers.txt") == 1) ;Testa se o arquivo foi realmente criado
+FileDelete("C:\Users\" & @UserName & "\Desktop\paidUsers.txt")
 
 ;CT_021
 UTAssert(FileExists("Data/paidUsers.txt") == 1) ;Pré-Condição
@@ -107,8 +107,8 @@ UTAssert(downloadGeneratedUsers(1, 1) == 0) ;Simula o botão "Cancelar" do explo
 UTAssert(FileExists("Data/paidUsersType1.txt") == 1) ;Pré-Condição
 UTAssert(listPaidUsersType1(1) == 1) ;Pré-Condição (Testa se os usários estão listados na caixa de diálogo)
 UTAssert(downloadGeneratedUsers(1,0 ) == 1) ;Faz o download do "paidUsersType1.txt" na área de trabalho
-UTAssert(FileExists("C:\Users\Zelp\Desktop\paidUsersType1.txt") == 1) ;Testa se o arquivo foi realmente criado
-FileDelete("C:\Users\Zelp\Desktop\paidUsersType1.txt")
+UTAssert(FileExists("C:\Users\" & @UserName & "\Desktop\paidUsersType1.txt") == 1) ;Testa se o arquivo foi realmente criado
+FileDelete("C:\Users\" & @UserName & "\Desktop\paidUsersType1.txt")
 
 ;CT_023
 UTAssert(FileExists("Data/paidUsersType1.txt") == 1) ;Pré-Condição
@@ -119,8 +119,8 @@ UTAssert(downloadGeneratedUsers(1, 1) == 0) ;Simula o botão "Cancelar" do explo
 UTAssert(FileExists("Data/paidUsersType2.txt") == 1) ;Pré-Condição
 UTAssert(listPaidUsersType2(1) == 1) ;Pré-Condição (Testa se os usários estão listados na caixa de diálogo)
 UTAssert(downloadGeneratedUsers(1,0 ) == 1) ;Faz o download do "paidUsersType2.txt" na área de trabalho
-UTAssert(FileExists("C:\Users\Zelp\Desktop\paidUsersType2.txt") == 1) ;Testa se o arquivo foi realmente criado
-FileDelete("C:\Users\Zelp\Desktop\paidUsersType2.txt")
+UTAssert(FileExists("C:\Users\" & @UserName & "\Desktop\paidUsersType2.txt") == 1) ;Testa se o arquivo foi realmente criado
+FileDelete("C:\Users\" & @UserName & "\Desktop\paidUsersType2.txt")
 
 ;CT_025
 UTAssert(FileExists("Data/paidUsersType2.txt") == 1) ;Pré-Condição
