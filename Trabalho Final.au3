@@ -255,7 +255,7 @@ Func downloadGeneratedUsers($UT, $aux)
 
    Local $sFileSelectFolder
    If $UT Then
-	  $sFileSelectFolder = "C:\Users\Zelp\Desktop"
+	  $sFileSelectFolder = "C:\Users\" & @UserName & "\Desktop"
    Else
 	  $sFileSelectFolder = FileSelectFolder($sMessage, "") ;Display an open dialog to select a file.
    EndIf
