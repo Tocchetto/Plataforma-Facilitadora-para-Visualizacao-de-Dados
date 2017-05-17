@@ -181,7 +181,7 @@ Func listPaidUsers($UT)
 	  If($UT) Then
 		 Return 0
 	  EndIf
-	  MsgBox(0, "", "Arquivo com com a relação dos usuários assinantes não existe.")
+	  MsgBox(0, "", "Arquivo com a relação dos usuários assinantes não existe.")
 	  GUICtrlSetData($generatedData, "")
 	  Return 0
    EndIf
@@ -206,7 +206,7 @@ Func listPaidUsersType1($UT)
 	  If($UT) Then
 		 Return 0
 	  EndIf
-	  MsgBox(0, "", "Arquivo com com a relação dos usuários do tipo1 não existe.")
+	  MsgBox(0, "", "Arquivo com a relação dos usuários do tipo1 não existe.")
 	  GUICtrlSetData($generatedData, "")
 	  Return False
    EndIf
@@ -231,7 +231,7 @@ Func listPaidUsersType2($UT)
 	  If($UT) Then
 		 Return 0
 	  EndIf
-	  MsgBox(0, "", "Arquivo com com a relação dos usuários do tipo2 não existe.")
+	  MsgBox(0, "", "Arquivo com a relação dos usuários do tipo2 não existe.")
 	  GUICtrlSetData($generatedData, "")
 	  Return False
    EndIf
