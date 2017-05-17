@@ -156,7 +156,7 @@ Func listAllUsers($UT)
 	  If($UT) Then
 		 Return 0
 	  EndIf
-	  MsgBox(0, "", "Arquivo com com a relação de todos os usuários não existe.")
+	  MsgBox(0, "", "Arquivo com a relação de todos os usuários não existe.")
 	  GUICtrlSetData($generatedData, "")
 	  Return 0
    EndIf
