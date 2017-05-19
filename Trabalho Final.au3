@@ -49,6 +49,7 @@ Func GUILogin()
 		 Case $closeButton
 			Exit
 		 Case $loginButton
+		 	GUICtrlSetState($loginButton, $GUI_DISABLE)
 			Local $username = GUICtrlRead($usernameInput)
 			Local $password = GUICtrlRead($passwordInput)
 			login($username, $password, 0)
@@ -79,6 +80,7 @@ Func login($username, $password, $UT)
 	  GUICtrlSetData($conectionProgressBar, 100)
 	  If Not $UT Then
 		 Sleep(700)
+		 GUICtrlSetState($loginButton, $GUI_ENABLE)
 	  EndIf
 	  if $chance <> 0 Then
 		 $chance = $chance - 1
