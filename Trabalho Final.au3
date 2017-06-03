@@ -70,7 +70,7 @@ Func login($username, $password, $UT)
 	  If Not $UT Then
 		 Sleep(700)
 	  EndIf
-	  MsgBox(1,"Sucesso", "Login efetuado com sucesso!", 1)
+	  MsgBox(0,"Sucesso", "Login efetuado com sucesso!", 1)
 	  GUIDelete($loginWindow)
 	  If Not $UT Then
 		 GUIinterface()
@@ -87,14 +87,14 @@ Func login($username, $password, $UT)
 		 If $UT Then
 			Return 0
 		 EndIf
-		 MsgBox(1, "Erro", "Usuário ou senha incorretos, tente novamente! ");Você tem mais " & $chance & " chances...
+		 MsgBox(0, "Erro", "Usuário ou senha incorretos, tente novamente! ");Você tem mais " & $chance & " chances...
 	  Else
 		 $loginError = 1
 		 $chance = 2
 		 If $UT Then
 			Return 2
 		 EndIf
-		 MsgBox(1, "Multiplas Tentativas Erradas", "Aguarde 10 segundos e tente novamente")
+		 MsgBox(0, "Multiplas Tentativas Erradas", "Aguarde 10 segundos e tente novamente")
 		 GUICtrlSetState($loginButton, $GUI_DISABLE)
 		 $momentoErro = _NowCalc()
 	  EndIf
