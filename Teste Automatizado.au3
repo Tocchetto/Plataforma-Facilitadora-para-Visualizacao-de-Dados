@@ -24,7 +24,7 @@ Func main()
 
 		 If(FileExists("data/allUsers.txt")) Then
 			MouseClick("left" , 98, 54)
-			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " & $file ,2)
+			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! ", 2)
 		 Else
 			MouseClick("left" , 98, 54)
 			Sleep(500)
@@ -40,7 +40,7 @@ Func main()
 
 		 If(FileExists("data/paidUsers.txt")) Then
 			MouseClick("left", 96, 118)
-			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " & $file ,2)
+			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " ,2)
 		 Else
 			MouseClick("left", 96, 118)
 			Sleep(500)
@@ -56,7 +56,7 @@ Func main()
 
 		 If(FileExists("data/paidUsersType1.txt")) Then
 			MouseClick("left", 394, 56)
-			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " & $file ,2)
+			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " ,2)
 		 Else
 			MouseClick("left", 394, 56)
 			Sleep(500)
@@ -72,7 +72,7 @@ Func main()
 
 		 If(FileExists("data/paidUsersType2.txt")) Then
 			MouseClick("left", 394, 119)
-			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " & $file ,2)
+			MsgBox(0,"Sucesso - Teste Automatizado", "Usuários mostrados com sucesso! " ,2)
 		 Else
 			MouseClick("left", 394, 119)
 			Sleep(500)
